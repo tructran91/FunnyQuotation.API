@@ -23,8 +23,7 @@ namespace FunnyQuotation.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("get-categories")]
+        [HttpGet("get-categories")]
         public async Task<ActionResult> GetCategories()
         {
             var queryCate = new GetCategoriesQuery(new CategoryCriteriaDto { IsPublished = true });
@@ -33,23 +32,28 @@ namespace FunnyQuotation.API.Controllers
             return Ok(categories);
         }
 
-        [HttpPost]
-        [Route("add-category")]
-        public async Task<IActionResult> CreateCategory([FromBody] EditCategoryViewModel category)
+        [HttpGet("get-category")]
+        public async Task<ActionResult> GetCategory(Guid id)
+        {
+            var queryCate = new GetCategoryByIdQuery(id);
+            var categoryDto = await _mediator.Send(queryCate);
+
+            return Ok(categoryDto);
+        }
+
+        [HttpPost("add-category")]
+        public async Task<IActionResult> CreateCategory([FromBody] AddEditCategoryViewModel category)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var categoryDto = _mapper.Map<CategoryDto>(category);
             var queryCate = new AddCategoryQuery(categoryDto);
             var result = await _mediator.Send(queryCate);
 
             if (!result.Succeeded)
-            {
                 return BadRequest(result);
-            }
+
             return Ok(result);
         }
     }

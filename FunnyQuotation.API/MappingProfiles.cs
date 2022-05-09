@@ -8,7 +8,7 @@ namespace FunnyQuotation.API
     {
         public MappingProfiles()
         {
-            CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap();
+            CreateMap<CategoryDto, AddEditCategoryViewModel>().ReverseMap();
             //CreateMap<QuotationDto, AdminEditQuotationViewModel>().ReverseMap();
             //CreateMap<UserDto, AdminEditUserViewModel>().ReverseMap();
         }

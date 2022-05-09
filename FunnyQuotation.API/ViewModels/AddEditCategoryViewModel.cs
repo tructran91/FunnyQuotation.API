@@ -2,7 +2,7 @@
 
 namespace FunnyQuotation.API.ViewModels
 {
-    public class EditCategoryViewModel
+    public class AddEditCategoryViewModel
     {
         public Guid? Id { get; set; }
 
