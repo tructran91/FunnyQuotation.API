@@ -19,5 +19,7 @@
         public string MetaDescription { get; set; }
 
         public string ThumbnailURL { get; set; }
+
+        public List<Quotation> Quotations { get; set; }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using FunnyQuotation.Application.Categories.Queries.Dtos;
 using FunnyQuotation.Application.Common.Interfaces.Repositories;
+using FunnyQuotation.Application.Common.Models;
 using FunnyQuotation.Application.Infrastructure;
 using FunnyQuotation.Domain.Entities;
 using MediatR;
 
 namespace FunnyQuotation.Application.Categories.Commands
 {
-    public class AddCategoryQuery : IRequest<string>
+    public class AddCategoryQuery : IRequest<Result<AddCategoryQuery>>
     {
         public CategoryDto Category { get; set; }
 
@@ -17,7 +18,7 @@ namespace FunnyQuotation.Application.Categories.Commands
         }
     }
 
-    public class AddCategoryHandle : IRequestHandler<AddCategoryQuery, string>
+    public class AddCategoryHandle : IRequestHandler<AddCategoryQuery, Result<AddCategoryQuery>>
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
@@ -28,22 +29,22 @@ namespace FunnyQuotation.Application.Categories.Commands
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(AddCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<Result<AddCategoryQuery>> Handle(AddCategoryQuery request, CancellationToken cancellationToken)
         {
             request.Category.Slug = request.Category.Name.Slugify();
 
             var originalCategory = await _categoryRepository.GetCategoryBySlugAsync(request.Category.Slug);
             if (originalCategory != null)
             {
-                return "Tên chủ đề đã tồn tại.";
+                return Result<AddCategoryQuery>.Failure("Tên chủ đề đã tồn tại.", null);
             }
 
             var category = _mapper.Map<Category>(request.Category);
-            category.Created = DateTime.Now;
 
-            await _categoryRepository.AddAsync(category);
+            var result = await _categoryRepository.AddAsync(category);
+            request.Category.Id = result.Id;
 
-            return string.Empty;
+            return Result<AddCategoryQuery>.Success(request); ;
         }
     }
 }

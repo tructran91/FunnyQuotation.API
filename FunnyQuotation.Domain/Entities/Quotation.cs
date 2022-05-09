@@ -18,9 +18,15 @@ namespace FunnyQuotation.Domain.Entities
 
         public QuotationStatus Status { get; set; }
 
+        public Guid CategoryId { get; set; }
+
         public Category Category { get; set; }
 
+        public Guid AuthorId { get; set; }
+
         public Author Author { get; set; }
+
+        //public IList<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 
     public enum QuotationStatus

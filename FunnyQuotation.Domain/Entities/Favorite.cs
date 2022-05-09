@@ -1,7 +1,10 @@
-﻿namespace FunnyQuotation.Domain.Entities
+﻿
+namespace FunnyQuotation.Domain.Entities
 {
-    public class Favorite : BaseEntity
+    public class Favorite
     {
+        public Guid Id { get; set; }
+
         public Guid QuotationId { get; set; }
 
         public Quotation Quotation { get; set; }

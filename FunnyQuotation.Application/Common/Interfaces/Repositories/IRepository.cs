@@ -17,7 +17,7 @@ namespace FunnyQuotation.Application.Common.Interfaces.Repositories
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
         Task AddRangeAsync(IEnumerable<TEntity> entities);
 
